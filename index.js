@@ -43,10 +43,10 @@ function log(type, message) {
     let content = getContent(message)
     switch (type) {
       case Level.ERROR: {
-        return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content}`);
+        return console.error(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content}`);
       }
       case Level.WARN: {
-        return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
+        return console.warn(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
       }
       case Level.INFO: {
         return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content}`);
