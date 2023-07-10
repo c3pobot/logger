@@ -23,7 +23,7 @@ function getContent(msg){
   if(!msg.stack) return msg
   let content = ''
   let stack = msg.stack?.split('\n')
-  for(let i = 0;i<lines;i++) content += stack[i]+'\n'
+  for(let i = 0;i<3;i++) content += stack[i]+'\n'
   return content
 }
 function setLevel(level = Level.INFO) {
@@ -39,7 +39,7 @@ module.exports.Level = Level;
 
 function log(type, message) {
   if (logLevel <= LevelMap[type]) {
-    const timestamp = getTimeStamp
+    const timestamp = getTimeStamp()
     let content = getContent(message)
     switch (type) {
       case Level.ERROR: {
