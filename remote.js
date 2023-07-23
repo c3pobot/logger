@@ -3,9 +3,9 @@ const fetch = require('node-fetch')
 const LOG_SERVER_URI = process.env.LOG_SERVER_URI
 const POD_NAME = process.env.POD_NAME
 const SET_NAME = process.env.SET_NAME
-const sendRequset = (payload)=>{
+const sendRequest = async(payload)=>{
   try{
-    fetch(LOG_SERVER_URI, {
+    await fetch(LOG_SERVER_URI, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: {'Content-Type': 'application/json'},
@@ -26,5 +26,5 @@ module.exports = (type, timestamp, content)=>{
     payload.pod = POD_NAME
     payload.set = SET_NAME
   }
-  sendRequset(payload)
+  sendRequest(payload)
 }
