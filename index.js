@@ -1,6 +1,7 @@
 /*
 Logger class for easy and aesthetically pleasing console logging
 */
+const remote = require('./remote')
 const chalk = require('chalk');
 const Level = {};
 Level.ERROR = 'error';
@@ -15,16 +16,26 @@ LevelMap[Level.INFO] = 2;
 LevelMap[Level.DEBUG] = 1;
 
 let logLevel;
-function getTimeStamp(){
-  let dateTime = new Date()
+function getTimeStamp(timestamp){
+  if(!timestamp) timestamp = Date.now()
+  let dateTime = new Date(timestamp)
   return dateTime.toLocaleString('en-US', { timeZone: 'Etc/GMT+5', hour12: false })
 }
 function getContent(msg){
-  if(!msg?.stack) return msg
-  let content = ''
-  let stack = msg.stack?.split('\n')
-  for(let i = 0;i<3;i++) content += stack[i]+'\n'
-  return content
+  try{
+    if (typeof msg === 'string' || msg instanceof String) return msg
+    if(msg?.stack){
+      if(logLevel > 1) return msg
+      let content = ''
+      let stack = msg.stack?.split('\n')
+      for(let i = 0;i<3;i++) content += stack[i]+'\n'
+      return content
+    }else{
+      return JSON.stringify(msg)
+    }
+  }catch(e){
+    return msg
+  }
 }
 function setLevel(level = Level.INFO) {
   if (LevelMap.hasOwnProperty(level)) {
@@ -39,11 +50,12 @@ module.exports.Level = Level;
 
 function log(type, message) {
   if (logLevel <= LevelMap[type]) {
-    const timestamp = getTimeStamp()
+    let timestamp = Date.now()
     let content = getContent(message)
+    remote(type, timestamp, content)
     switch (type) {
       case Level.ERROR: {
-        return console.error(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content}`);
+        return console.error(`${getTimeStamp(timestamp)} ${chalk.bgRed(type.toUpperCase())} ${content}`);
       }
       case Level.WARN: {
         return console.warn(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
