@@ -25,11 +25,11 @@ function getContent(msg){
   try{
     if (typeof msg === 'string' || msg instanceof String) return msg
     if(msg?.stack){
-      if(logLevel > 1) return msg
-      let content = ''
+      if(logLevel === 1) return msg
+      let res = ''
       let stack = msg.stack?.split('\n')
-      for(let i = 0;i<3;i++) content += stack[i]+'\n'
-      return content
+      for(let i = 0;i<3;i++) res += stack[i]+'\n'
+      return res
     }else{
       return JSON.stringify(msg)
     }
@@ -54,19 +54,19 @@ function log(type, message) {
     let content = getContent(message)
     switch (type) {
       case Level.ERROR: {
-        remote(type, timestamp, message)
+        remote(type, timestamp, content)
         return console.error(`${getTimeStamp(timestamp)} ${chalk.bgRed(type.toUpperCase())} ${content}`);
       }
       case Level.WARN: {
-        remote(type, timestamp, message)
+        remote(type, timestamp, content)
         return console.warn(`${getTimeStamp(timestamp)} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
       }
       case Level.INFO: {
-        remote(type, timestamp, message)
+        remote(type, timestamp, content)
         return console.log(`${getTimeStamp(timestamp)} ${chalk.bgBlue(type.toUpperCase())} ${content}`);
       }
       case Level.DEBUG: {
-        remote(type, timestamp, message)
+        remote(type, timestamp, content)
         return console.log(`${getTimeStamp(timestamp)} ${chalk.green(type.toUpperCase())} ${content}`);
       }
       default: throw new TypeError('Logger type must be either error, warn, info/log, or debug.');
