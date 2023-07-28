@@ -23,12 +23,16 @@ function getTimeStamp(timestamp){
 }
 function getContent(msg){
   try{
+    //if(logLevel === 1) return msg
     if (typeof msg === 'string' || msg instanceof String) return msg
     if(msg?.stack){
-      if(logLevel === 1) return msg
-      let res = ''
+      let res = msg
+      if(logLevel === 1){
+        msg += '\n'+msg.stack
+        return msg
+      }
       let stack = msg.stack?.split('\n')
-      for(let i = 0;i<3;i++) res += stack[i]+'\n'
+      for(let i = 0;i<3;i++) res += '\n'+stack[i]
       return res
     }else{
       return JSON.stringify(msg)
