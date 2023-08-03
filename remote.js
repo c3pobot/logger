@@ -12,7 +12,7 @@ const sendRequest = async(payload)=>{
       timeout: 30000
     })
   }catch(e){
-
+    return
   }
 }
 module.exports = (type, timestamp, content)=>{

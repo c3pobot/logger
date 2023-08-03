@@ -1,7 +1,8 @@
 /*
 Logger class for easy and aesthetically pleasing console logging
 */
-const remote = require('./remote')
+const remote = require('./remote');
+const checkLogLevel = require('./checkLogLevel')
 const chalk = require('chalk');
 const Level = {};
 Level.ERROR = 'error';
@@ -84,3 +85,4 @@ module.exports.warn = (content) => log(Level.WARN, content);
 module.exports.info = (content) => log(Level.INFO, content);
 module.exports.log = (content) => log(Level.INFO, content);
 module.exports.debug = (content) => log(Level.DEBUG, content);
+checkLogLevel({log: log, setLevel: setLevel})
