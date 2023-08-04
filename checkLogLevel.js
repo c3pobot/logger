@@ -3,7 +3,8 @@ let log, setLevel
 const fetch = require('node-fetch')
 const BOT_SVC = process.env.BOT_SVC || 'bot:3000'
 const SET_NAME = process.env.SET_NAME
-let LOG_LEVEL = process.env.LOG_LEVEL || 'info';
+let LOG_LEVEL = process.env.LOG_LEVEL || 'info
+let botSvcReady = false
 const parseResponse = async(res)=>{
   try{
     if(!res) return
@@ -28,11 +29,7 @@ const getLogLevel = async()=>{
     let res = await fetch(`http://${BOT_SVC}/logLevel`, { method: 'POST', timeout: 10000, compress: true, headers: {'Content-Type': 'application/json'}, body: JSON.stringify({setName: SET_NAME}) })
     return await parseResponse(res)
   }catch(e){
-    if(e?.error === 'FetchError'){
-      log('error', `name: ${e.error} type: ${e.type} reason: ${e.reason}`)
-      return
-    }
-    throw(e)
+    return
   }
 }
 const sync = async()=>{
