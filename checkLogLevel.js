@@ -1,7 +1,7 @@
 'use strict'
 let log, setLevel
 const fetch = require('node-fetch')
-const BOT_SVC = process.env.BOT_SVC || 'bot:3000'
+const KUBE_BRIDGE = process.env.KUBE_BRIDGE || 'kube-bridge:3000'
 const SET_NAME = process.env.SET_NAME
 let LOG_LEVEL = process.env.LOG_LEVEL || 'info'
 let botSvcReady = false
@@ -26,7 +26,7 @@ const parseResponse = async(res)=>{
 }
 const getLogLevel = async()=>{
   try{
-    let res = await fetch(`http://${BOT_SVC}/logLevel`, { method: 'POST', timeout: 10000, compress: true, headers: {'Content-Type': 'application/json'}, body: JSON.stringify({setName: SET_NAME}) })
+    let res = await fetch(`http://${KUBE_BRIDGE}/logLevel`, { method: 'POST', timeout: 10000, compress: true, headers: {'Content-Type': 'application/json'}, body: JSON.stringify({setName: SET_NAME}) })
     return await parseResponse(res)
   }catch(e){
     return
