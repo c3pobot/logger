@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const BOT_SVC = process.env.BOT_SVC || 'bot:3000'
 const SET_NAME = process.env.SET_NAME
 let LOG_LEVEL = process.env.LOG_LEVEL || 'info'
-let botSvcReady = false
+
 const parseResponse = async(res)=>{
   try{
     if(!res) return
