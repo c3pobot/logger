@@ -1,8 +1,9 @@
 /*
 Logger class for easy and aesthetically pleasing console logging
 */
-const checkLogLevel = require('./checkLogLevel')
+//const checkLogLevel = require('./checkLogLevel')
 const chalk = require('chalk');
+
 const Level = {};
 Level.ERROR = 'error';
 Level.WARN = 'warn';
@@ -23,7 +24,7 @@ function getTimeStamp(timestamp){
 }
 function getContent(msg){
   try{
-    //if(logLevel === 1) return msg
+    if(logLevel === 1) return msg
     if (typeof msg === 'string' || msg instanceof String) return msg
     if(msg?.stack){
       let res = msg
@@ -56,18 +57,19 @@ function log(type, message) {
   if (logLevel <= LevelMap[type]) {
     let timestamp = Date.now()
     let content = getContent(message)
+    let prettyTime = getTimeStamp(timestamp)
     switch (type) {
       case Level.ERROR: {
-        return console.error(`${getTimeStamp(timestamp)} ${chalk.bgRed(type.toUpperCase())} ${content}`);
+        return console.error(`${prettyTime} ${chalk.bgRed(type.toUpperCase())} ${content}`);
       }
       case Level.WARN: {
-        return console.warn(`${getTimeStamp(timestamp)} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
+        return console.warn(`${prettyTime} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
       }
       case Level.INFO: {
-        return console.log(`${getTimeStamp(timestamp)} ${chalk.bgBlue(type.toUpperCase())} ${content}`);
+        return console.log(`${prettyTime} ${chalk.bgBlue(type.toUpperCase())} ${content}`);
       }
       case Level.DEBUG: {
-        return console.log(`${getTimeStamp(timestamp)} ${chalk.green(type.toUpperCase())} ${content}`);
+        return console.log(`${prettyTime} ${chalk.green(type.toUpperCase())} ${content}`);
       }
       default: throw new TypeError('Logger type must be either error, warn, info/log, or debug.');
     }
