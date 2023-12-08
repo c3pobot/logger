@@ -82,4 +82,4 @@ module.exports.warn = (content) => log(Level.WARN, content);
 module.exports.info = (content) => log(Level.INFO, content);
 module.exports.log = (content) => log(Level.INFO, content);
 module.exports.debug = (content) => log(Level.DEBUG, content);
-checkLogLevel({log: log, setLevel: setLevel})
+//checkLogLevel({log: log, setLevel: setLevel})
