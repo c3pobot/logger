@@ -24,8 +24,8 @@ function getTimeStamp(timestamp){
 }
 function getContent(msg){
   try{
-    
-    if(logLevel === 1) return msg
+
+    //if(logLevel === 1) return msg
     if (typeof msg === 'string' || msg instanceof String) return msg
     if(msg?.stack){
       let res = msg
