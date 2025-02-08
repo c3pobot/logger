@@ -1,7 +1,6 @@
 /*
 Logger class for easy and aesthetically pleasing console logging
 */
-//const checkLogLevel = require('./checkLogLevel')
 const chalk = require('chalk');
 
 const Level = {};
@@ -22,13 +21,12 @@ function getTimeStamp(timestamp){
   let dateTime = new Date(timestamp)
   return dateTime.toLocaleString('en-US', { timeZone: 'Etc/GMT+5', hour12: false })
 }
-function getContent(msg){
+function getContent(content){
   try{
-    if(!msg?.message || logLevel == 1) return msg
-    if(msg?.message) return msg.message
-    return msg
+    if(content?.message) return content.message
+    return content
   }catch(e){
-    return msg
+    return content
   }
 }
 function setLevel(level = Level.INFO) {
@@ -42,26 +40,34 @@ setLevel(Level.INFO);
 
 module.exports.Level = Level;
 
-function log(type, message) {
+function log(type, content) {
   if (logLevel <= LevelMap[type]) {
+
     let timestamp = Date.now()
-    let content = getContent(message)
+    let logMsg = getContent(content)
     let prettyTime = getTimeStamp(timestamp)
     switch (type) {
       case Level.ERROR: {
-        return console.error(`${prettyTime} ${chalk.bgRed(type.toUpperCase())} ${content}`);
+        console.error(`${prettyTime} ${chalk.bgRed(type.toUpperCase())} ${logMsg}`);
+        if(logLevel === 1 && content?.message) console.error(content)
+        return
       }
       case Level.WARN: {
-        return console.warn(`${prettyTime} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
+        console.warn(`${prettyTime} ${chalk.black.bgYellow(type.toUpperCase())} ${logMsg}`);
+        if(logLevel === 1 && content?.message) console.warn(content)
+        return
       }
       case Level.INFO: {
-        return console.log(`${prettyTime} ${chalk.bgBlue(type.toUpperCase())} ${content}`);
+        console.log(`${prettyTime} ${chalk.bgBlue(type.toUpperCase())} ${logMsg}`);
+        if(logLevel === 1 && content?.message) console.error(content)
+        return
       }
       case Level.DEBUG: {
-        return console.log(`${prettyTime} ${chalk.green(type.toUpperCase())} ${content}`);
+        return console.log(`${prettyTime} ${chalk.green(type.toUpperCase())} ${logMsg}`);
       }
       default: throw new TypeError('Logger type must be either error, warn, info/log, or debug.');
     }
+
   }
 };
 
