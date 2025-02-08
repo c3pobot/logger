@@ -23,6 +23,7 @@ function getTimeStamp(timestamp){
 }
 function getContent(content){
   try{
+    if(logLevel === 1) return content
     if(content?.message) return content.message
     return content
   }catch(e){
@@ -42,28 +43,24 @@ module.exports.Level = Level;
 
 function log(type, content) {
   if (logLevel <= LevelMap[type]) {
-
-    let timestamp = Date.now()
-    let logMsg = getContent(content)
-    let prettyTime = getTimeStamp(timestamp)
     switch (type) {
       case Level.ERROR: {
-        console.error(`${prettyTime} ${chalk.bgRed(type.toUpperCase())} ${logMsg}`);
+        console.error(`${getTimeStamp(Date.now())} ${chalk.bgRed(type.toUpperCase())} ${getContent(content)}`);
         if(logLevel === 1 && content?.message) console.error(content)
         return
       }
       case Level.WARN: {
-        console.warn(`${prettyTime} ${chalk.black.bgYellow(type.toUpperCase())} ${logMsg}`);
+        console.warn(`${getTimeStamp(Date.now())} ${chalk.black.bgYellow(type.toUpperCase())} ${getContent(content)}`);
         if(logLevel === 1 && content?.message) console.warn(content)
         return
       }
       case Level.INFO: {
-        console.log(`${prettyTime} ${chalk.bgBlue(type.toUpperCase())} ${logMsg}`);
+        console.log(`${getTimeStamp(Date.now())} ${chalk.bgBlue(type.toUpperCase())} ${getContent(content)}`);
         if(logLevel === 1 && content?.message) console.error(content)
         return
       }
       case Level.DEBUG: {
-        return console.log(`${prettyTime} ${chalk.green(type.toUpperCase())} ${logMsg}`);
+        return console.log(`${getTimeStamp(Date.now())} ${chalk.green(type.toUpperCase())} ${getContent(content)}`);
       }
       default: throw new TypeError('Logger type must be either error, warn, info/log, or debug.');
     }
